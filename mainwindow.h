@@ -6,7 +6,7 @@
 #include <QListWidget>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-
+using namespace std;
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -14,13 +14,13 @@ QT_END_NAMESPACE
 class ContactTracer {
 public:
     void addContact(const QString& a, const QString& b);
-    std::vector<QString> traceExposure(const QString& infected);
-    std::vector<QString> traceExposureMultiple(const std::vector<QString>& infectedPeople);
+    vector<QString> traceExposure(const QString& infected);
+    vector<QString> traceExposureMultiple(const std::vector<QString>& infectedPeople);
     QStringList getAllPeople();
-    const std::unordered_map<QString, std::unordered_set<QString>>& getGraph() const;
+    const unordered_map<QString, unordered_set<QString>>& getGraph() const;
 
 private:
-    std::unordered_map<QString, std::unordered_set<QString>> graph;
+    unordered_map<QString, unordered_set<QString>> graph;
 };
 
 class MainWindow : public QMainWindow {

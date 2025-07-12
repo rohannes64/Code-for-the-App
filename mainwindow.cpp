@@ -7,7 +7,7 @@
 #include <unordered_set>
 #include <queue>
 #include <QGraphicsTextItem>
-
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -60,7 +60,7 @@ MainWindow::~MainWindow() {}
 void MainWindow::updateAllPeopleList() {
     allPeopleList->clear();
     QStringList people = tracer.getAllPeople();
-    std::sort(people.begin(), people.end(), [](const QString &a, const QString &b) {
+    sort(people.begin(), people.end(), [](const QString &a, const QString &b) {
         return a.toLower() < b.toLower();
     });
 
@@ -79,14 +79,14 @@ void MainWindow::updateGraphView() {
     int n = graphData.size();
     if (n == 0) return;
 
-    std::vector<QString> names;
+    vector<QString> names;
     for (const auto& p : graphData) names.push_back(p.first);
 
-    std::unordered_map<QString, QPointF> positions;
+    unordered_map<QString, QPointF> positions;
     for (int i = 0; i < n; ++i) {
         double angle = (2 * M_PI * i) / n;
-        double x = center.x() + radius * std::cos(angle);
-        double y = center.y() + radius * std::sin(angle);
+        double x = center.x() + radius * cos(angle);
+        double y = center.y() + radius * sin(angle);
         positions[names[i]] = QPointF(x, y);
 
         graphScene->addEllipse(x - nodeRadius/2, y - nodeRadius/2, nodeRadius, nodeRadius, QPen(), QBrush(Qt::lightGray));
@@ -128,7 +128,7 @@ void MainWindow::traceExposure() {
     }
 
     QStringList infectedList = input.split(',', Qt::SkipEmptyParts);
-    std::vector<QString> infectedPeople;
+    vector<QString> infectedPeople;
     for (QString name : infectedList) {
         name = name.trimmed();
         if (!name.isEmpty()) {
@@ -166,13 +166,13 @@ QStringList ContactTracer::getAllPeople() {
     }
     return people;
 }
-const std::unordered_map<QString, std::unordered_set<QString>>& ContactTracer::getGraph() const {
+const unordered_map<QString, unordered_set<QString>>& ContactTracer::getGraph() const {
     return graph;
 }
-std::vector<QString> ContactTracer::traceExposure(const QString &infected) {
-    std::unordered_set<QString> visited;
-    std::queue<QString> q;
-    std::vector<QString> exposed;
+vector<QString> ContactTracer::traceExposure(const QString &infected) {
+    unordered_set<QString> visited;
+    queue<QString> q;
+    vector<QString> exposed;
 
     q.push(infected);
     visited.insert(infected);
@@ -190,10 +190,10 @@ std::vector<QString> ContactTracer::traceExposure(const QString &infected) {
     }
     return exposed;
 }
-std::vector<QString> ContactTracer::traceExposureMultiple(const std::vector<QString>& infectedPeople) {
-    std::unordered_set<QString> visited;
-    std::queue<QString> q;
-    std::vector<QString> exposed;
+vector<QString> ContactTracer::traceExposureMultiple(const vector<QString>& infectedPeople) {
+    unordered_set<QString> visited;
+    queue<QString> q;
+    vector<QString> exposed;
 
     for (const auto& person : infectedPeople) {
         if (graph.find(person) != graph.end()) {
